@@ -13,8 +13,27 @@
 	linia n - 1, etc.
 */
 
-void reversePic(Picture *pic);
 
+//sau *(*(pic->pix_array+i)+j)
+void reversePic(Picture *pic)
+{
+	int i,j,n,m;
+	Pixel aux;
+	Pixel **matrix=pic->pix_array;
+	n=pic->height;
+	m=pic->width;
+	for(i=0; i<n/2; i++)
+	{
+		Pixel *l1=(Pixel *)(*(matrix+i));
+		Pixel *l2=(Pixel *)(*(matrix+(n-i-1)));
+		for(j=0; j<m; j++)
+		{
+			aux=*(l1+j);
+			*(l1+j)=*(l2+j);
+			*(l2+j)=aux;
+		}
+	}
+}
 /*
 	TODO b
 	Functia primeste ca parametru o imagine si intoarce noua imagine obtinuta
@@ -25,7 +44,23 @@ void reversePic(Picture *pic);
 	p.b = 0.11 * p.b;
 */
 
-void colorToGray(Picture *pic);
+void colorToGray(Picture *pic)
+{
+	int i,j,n,m;
+	Pixel **matrix=pic->pix_array;
+	n=pic->height;
+	m=pic->width;
+	for(i=0; i<n; i++)
+	{
+		Pixel *line=(Pixel *)(*(matrix+i));
+		for(j=0; j<m; j++)
+		{
+			(*line).R*=0.3;
+			(*line).G*=0.59;
+			(*line).B*=0.11;
+		}
+	}
+}
 
 /*
 	Structura unui pixel, cea a unei imagini, precum si generarea acestora
@@ -43,6 +78,12 @@ int main() {
 	Pixel **pix_array = generatePixelArray(height, width);
 	Picture *pic = generatePicture(height, width, pix_array);
 
+	printPicture(pic);
+	reversePic(pic);
+	printf("\n");
+	printPicture(pic);
+	printf("\n");
+	colorToGray(pic);
 	printPicture(pic);
 
 	freePicture(&pic);
