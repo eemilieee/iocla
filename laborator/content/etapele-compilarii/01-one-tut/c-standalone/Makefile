@@ -1,5 +1,5 @@
 CFLAGS = -fno-PIC -m32 -g
-LDFLAGS = -nostdinc -nostdlib -no-pie -m32
+LDFLAGS = -nostdinc -nostdlib -no-pie -m elf_i386
 AS = nasm
 ASFLAGS = -f elf32
 
@@ -10,8 +10,10 @@ ASFLAGS = -f elf32
 all: hello
 
 hello: hello.o start.o puts.o
+	ld $(LDFLAGS) hello.o start.o puts.o -o hello
 
 hello.o: hello.c
+	gcc $(CFLAGS) -c hello.c -o hello.o
 
 start.o: start.asm
 	$(AS) $(ASFLAGS) -o $@ $<
