@@ -15,3 +15,9 @@ int my_main(void)
 	hi();
 	bye();
 }
+
+int main(void)
+{
+	my_main();
+	return 0;
+}
