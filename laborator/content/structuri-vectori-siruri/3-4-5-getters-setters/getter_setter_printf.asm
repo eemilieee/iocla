@@ -32,8 +32,16 @@ get_int:
 
     ; Common entry instructions used to set the function stack frame.
     ; Do not modify them.
+
     push ebp
     mov ebp, esp
+
+    ; parametru functiei: ebp + 8
+
+    mov ebx, [ebp + 8]
+    lea ecx, [ebx + int_x]
+
+    mov eax, [ecx]
 
     ; The first argument is a pointer to the beginning of the structure, so you
     ; must use it to calculate the actual address of the data you want to get.
@@ -50,8 +58,15 @@ get_char:
 
     ; Common entry instructions used to set the function stack frame.
     ; Do not modify them.
+
     push ebp
     mov ebp, esp
+
+    mov ebx, [ebp + 8]
+    lea ecx, [ebx + char_y]
+    xor eax, eax
+
+    mov al, [ecx]
 
     ; The first argument is a pointer to the beginning of the structure, so you
     ; must use it to calculate the actual address of the data you want to get.
@@ -68,8 +83,12 @@ get_string:
 
     ; Common entry instructions used to set the function stack frame.
     ; Do not modify them.
+
     push ebp
     mov ebp, esp
+
+    mov ebx, [ebp + 8]
+    lea eax, [ebx + string_s]
 
     ; The first argument is a pointer to the beginning of the structure, so you
     ; must use it to calculate the actual address of the data you want to get.
@@ -86,8 +105,15 @@ set_int:
 
     ; Common entry instructions used to set the function stack frame.
     ; Do not modify them.
+
     push ebp
     mov ebp, esp
+
+    mov ebx, [ebp + 8]
+    mov ecx, [ebp + 12]
+    
+    lea edx, [ebx + int_x]
+    mov [edx], ecx
 
     ; The first argument is a pointer to the beginning of the structure, so you
     ; must use it to calculate the actual address of the data you want to set.
@@ -103,8 +129,14 @@ set_char:
 
     ; Common entry instructions used to set the function stack frame.
     ; Do not modify them.
+
     push ebp
     mov ebp, esp
+
+    mov ebx, [ebp + 8]
+    mov ecx, [ebp + 12]
+    lea edx, [ebx + char_y]
+    mov [edx], cl
 
     ; The first argument is a pointer to the beginning of the structure, so you
     ; must use it to calculate the actual address of the data you want to set.
@@ -120,8 +152,17 @@ set_string:
 
     ; Common entry instructions used to set the function stack frame.
     ; Do not modify them.
+
     push ebp
     mov ebp, esp
+
+    mov ecx, 14
+
+    mov edx, [ebp + 8]
+    lea edi, [edx +string_s]
+    mov esi, [ebp + 12]
+
+    rep movsb
 
     ; The first argument is a pointer to the beginning of the structure, so you
     ; must use it to calculate the actual address of the data you want to set.
@@ -146,10 +187,10 @@ main:
     add esp, 4
 
     ;uncomment when get_int is ready
-    ;push eax
-    ;push int_format
-    ;call printf
-    ;add esp, 8
+    push eax
+    push int_format
+    call printf
+    add esp, 8
 
     movzx edx, byte [new_char]
     ; movzx is the same as
@@ -165,10 +206,10 @@ main:
     add esp, 4
 
     ;uncomment when get_char is ready
-    ;push eax
-    ;push char_format
-    ;call printf
-    ;add esp, 8
+    push eax
+    push char_format
+    call printf
+    add esp, 8
 
     mov edx, new_string
     push edx
@@ -181,11 +222,32 @@ main:
     add esp, 4
 
     ;uncomment when get_string is ready
-    ;push eax
-    ;push string_format
-    ;call printf
-    ;add esp, 8
+    push eax
+    push string_format
+    call printf
+    add esp, 8
 
     xor eax, eax
+
+    mov ax, word[sample_obj]
+    PRINTF32 `%hu\n\x0`, eax
+
+    xor eax, eax
+
+    mov al, byte[sample_obj + 4]
+    PRINTF32 `%c\n\x0`, eax
+
+    xor eax, eax
+    mov ecx, 5
+
+print_string:
+    mov al, byte[sample_obj + ecx]
+    cmp al, 0
+    je out
+    PRINTF32 `%c\x0`, eax
+    add ecx, 1
+    jmp print_string
+
+out:
     leave
     ret
