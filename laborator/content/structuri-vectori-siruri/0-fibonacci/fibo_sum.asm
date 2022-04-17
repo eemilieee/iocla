@@ -23,6 +23,21 @@ main:
     
     ; use loop instruction 
 
+    mov ecx, [N]
+    sub ecx, 1
+    xor ebx, ebx
+    mov edx, 1
+    mov eax, 1
+
+sum:
+    xor esi, esi
+    add esi, ebx
+    add esi, edx
+    mov ebx, edx
+    mov edx, esi
+    add eax, esi
+    loop sum
+
     push eax
     push print_format_2
     call printf
