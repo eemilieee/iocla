@@ -10,9 +10,32 @@ main:
     mov ebp, esp
 
     ; TODO - replace below instruction with the algorithm for the Fibonacci sequence
-    sub esp, NUM_FIBO * 4
+    ; sub esp, NUM_FIBO * 4
 
     mov ecx, NUM_FIBO
+
+    xor eax, eax
+    mov ebx, 1
+    push eax
+    push ebx
+    
+    sub ecx, 2
+
+fibo:
+    cmp ecx, 0
+    je out
+    xor edx, edx
+    mov edx, eax
+    add edx, ebx
+    push edx
+    mov eax, ebx
+    mov ebx, edx
+    sub ecx, 1
+    jmp fibo
+
+out:
+    mov ecx, NUM_FIBO
+
 print:
     mov eax, dword [esp + (ecx - 1) * 4]
     PRINTF32 `%d \x0`, eax
