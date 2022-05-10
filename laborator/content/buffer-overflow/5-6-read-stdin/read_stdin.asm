@@ -5,6 +5,9 @@
 ; Buffer is stored on the stack.
 ;
 
+; la 5: 64 de 'z'
+; la 6: 65 de 'z' si "FLOW"
+
 extern printf
 extern puts
 extern strlen
