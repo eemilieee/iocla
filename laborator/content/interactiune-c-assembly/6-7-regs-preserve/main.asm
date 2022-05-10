@@ -28,12 +28,12 @@ print_reverse_array:
 next:
 
 ;   TODO1: Decomentați următoarele două linii comentate
-;   push ecx
+    push ecx
 	push dword [ebx+ecx*4-4]
 	push format_string
 	call printf
 	add esp, 8
-;   pop ecx
+    pop ecx
 	loop next
 
 	push newline
@@ -56,10 +56,16 @@ main:
 	lea eax, [myarray]
 
 ;   TODO2: Decomentați această secvență de cod
-;   push edx
-;   push eax
-;   call double_array
-;   add esp, 8
+
+	; se salveaza edx si eax inainte de apelu functiei, e adevarat
+	; da problema e ca functia le modifica si trebe restaurate
+	; adica se fac 2 pop-uri (le dam jos de pe stiva)
+    push edx
+    push eax
+    call double_array
+	pop eax
+	pop edx
+    ;add esp, 8   -> asta nu mai are sens acuma dupa pop-uri
 
 	push edx
 	push eax
