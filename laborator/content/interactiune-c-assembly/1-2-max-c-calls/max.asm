@@ -15,6 +15,7 @@ get_max:
 
 	mov ebx, [ebp+8]
 	mov ecx, [ebp+12]
+
 	mov edx, [ebp + 16]
 	xor eax, eax
 
@@ -24,6 +25,7 @@ compare:
 	mov eax, [ebx+ecx*4-4]
 	mov dword[edx], ecx
 	sub dword[edx], 1
+
 check_end:
 	loopnz compare
 
